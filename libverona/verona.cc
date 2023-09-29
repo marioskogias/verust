@@ -1,6 +1,7 @@
 #include <verona.h>
 #include <cpp/when.h>
 #include <iostream>
+#include <cstdio>
 
 using namespace verona::rt;
 using namespace verona::cpp;
@@ -26,5 +27,15 @@ extern "C"
   {
     auto& sched = Scheduler::get();
     sched.run();
+  }
+
+  void schedule_task(void *task)
+  {
+    std::cout << "will schedule a task\n";
+
+    when() << [=]() {
+      printf("This is the task to send back to Rust: %lx\n",
+          (unsigned long)task);
+    };
   }
 }
