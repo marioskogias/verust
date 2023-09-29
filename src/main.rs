@@ -1,10 +1,11 @@
-#[link(name = "verona")]
-extern "C" {
-    fn marios_print();
-}
-
+mod verona_stubs;
+mod executor;
 
 fn main() {
     println!("Hello, world!");
-    unsafe {marios_print();}
+    verona_stubs::verona_marios_println();
+
+    let exec = executor::Executor::new();
+
+    exec.run()
 }
