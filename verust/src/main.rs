@@ -1,4 +1,4 @@
-#[link(name = "mylib")]
+#[link(name = "verona")]
 extern "C" {
     fn marios_print();
 }
