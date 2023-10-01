@@ -1,5 +1,5 @@
-mod verona_stubs;
 mod executor;
+mod verona_stubs;
 
 async fn say_hello() {
     println!("hello");
@@ -7,9 +7,6 @@ async fn say_hello() {
 }
 
 fn main() {
-    println!("Hello, world!");
-    verona_stubs::verona_marios_println();
-
     let exec = executor::Executor::new();
 
     exec.spawn(say_hello());
