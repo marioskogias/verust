@@ -17,7 +17,10 @@ pub struct Task {
 }
 
 impl ArcWake for Task {
-    fn wake_by_ref(_arc_self: &Arc<Self>) {}
+    fn wake_by_ref(arc_self: &Arc<Self>) {
+        // FIXME: This creates a new task from a verona perspective
+        verona_stubs::verona_schedule_task(arc_self.clone());
+    }
 }
 
 impl Executor {

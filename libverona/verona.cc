@@ -16,6 +16,10 @@ extern "C"
     Scheduler::set_detect_leaks(true);
     sched.set_fair(true);
     sched.init(2);
+    // Prevent the runtime from getting destroyed
+    when() << [=]() {
+      Scheduler::add_external_event_source();
+    };
   }
 
   void scheduler_run()
