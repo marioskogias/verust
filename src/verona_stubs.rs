@@ -1,4 +1,5 @@
- use std::ffi::c_void;
+use std::ffi::c_void;
+use crate::executor::Task;
 
 #[link(name = "verona")]
 extern "C" {
@@ -26,8 +27,8 @@ pub fn verona_scheduler_run() {
     }
 }
 
-pub fn verona_schedule_task(task: *mut dyn futures::Future<Output = ()>) {
-    let task_ptr = task as *mut c_void;
+pub fn verona_schedule_task(task: Box<Task>) {
+    let task_ptr = Box::into_raw(task) as *mut c_void;
     unsafe {
         schedule_task(task_ptr);
     }

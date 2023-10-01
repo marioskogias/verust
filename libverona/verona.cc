@@ -8,6 +8,8 @@ using namespace verona::cpp;
 
 extern "C"
 {
+  void foo_rust(void *future);
+
   void marios_print()
   {
     std::cout << "Hello from the external lib\n";
@@ -36,6 +38,7 @@ extern "C"
     when() << [=]() {
       printf("This is the task to send back to Rust: %lx\n",
           (unsigned long)task);
+      foo_rust(task);
     };
   }
 }
