@@ -42,6 +42,14 @@ impl Executor {
     }
 }
 
+pub fn spawn(future: impl Future<Output = ()> + 'static + Send) {
+    let boxed_future = future.boxed();
+    let boxed_task = Arc::new(Task {
+        future: Mutex::new(boxed_future),
+    });
+    verona_stubs::verona_schedule_task(boxed_task);
+}
+
 #[no_mangle]
 pub extern "C" fn poll_future_in_rust(task: *mut c_void) {
     unsafe {
@@ -49,8 +57,6 @@ pub extern "C" fn poll_future_in_rust(task: *mut c_void) {
         let boxed_task = Arc::from_raw(raw_ptr);
 
         let mut boxed_future = boxed_task.future.lock().unwrap();
-        //let mw = Arc::new(MyWaker{});
-        //let waker = waker_ref(&mw);
         let waker = waker_ref(&boxed_task);
         let context = &mut Context::from_waker(&waker);
 

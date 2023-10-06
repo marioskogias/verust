@@ -6,9 +6,12 @@ use std::time::Duration;
 
 async fn say_hello() {
     println!("hello");
-    println!("Will create a time future and await it");
     timerfuture::TimerFuture::new(Duration::new(2, 0)).await;
     println!("world");
+
+    executor::spawn(async {
+        println!("I can spawn like this too");
+    })
 }
 
 fn main() {
